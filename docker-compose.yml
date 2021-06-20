@@ -17,7 +17,7 @@ services:
             - VIRTUAL_HOST=api.andyotarola.xyz,www.api.andyotarola.xyz
             - LETSENCRYPT_HOST=api.andyotarola.xyz,www.api.andyotarola.xyz
         
-    nginx_proxy:
+    nginx-proxy:
         image: jwilder/nginx-proxy
         restart: always
         ports: 
@@ -41,4 +41,4 @@ services:
             - /certs/website:/etc/nginx/certs:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
         volumes_from: 
-            - nginx_proxy:rw
+            - nginx-proxy:rw
