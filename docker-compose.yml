@@ -1,0 +1,44 @@
+version: "3.8"
+
+services: 
+
+    browser:
+        build: browser
+        restart: always
+        environment: 
+            - VIRTUAL_HOST=andyotarola.xyz,www.andyotarola.xyz
+            - LETSENCRYPT_HOST=andyotarola.xyz,www.andyotarola.xyz
+            - LETSENCRYPT_EMAIL=contacto@andyotarola.xyz
+
+    server: 
+        build: server
+        restart: always
+        environment: 
+            - VIRTUAL_HOST=api.andyotarola.xyz,www.api.andyotarola.xyz
+            - LETSENCRYPT_HOST=api.andyotarola.xyz,www.api.andyotarola.xyz
+        
+    nginx_proxy:
+        image: jwilder/nginx-proxy
+        restart: always
+        ports: 
+            - "80:80"
+            - "443:443"
+        volumes: 
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+            - /certs/website:/etc/nginx/certs:ro
+            - /etc/nginx/vhost.d
+            - /usr/share/nginx/html
+
+        privileged: true
+
+        labels: 
+            - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+    
+    letsencrypt:
+        image: jrcs/letsencrypt-nginx-proxy-companion
+        restart: always
+        volumes: 
+            - /certs/website:/etc/nginx/certs:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        volumes_from: 
+            - nginx_proxy:rw
