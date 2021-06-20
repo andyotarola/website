@@ -6,16 +6,15 @@ services:
         build: browser
         restart: always
         environment: 
-            - VIRTUAL_HOST=andyotarola.xyz,www.andyotarola.xyz
-            - LETSENCRYPT_HOST=andyotarola.xyz,www.andyotarola.xyz
+            - VIRTUAL_HOST=andyotarola.xyz,www.andyotarola.xyz,api.andyotarola.xyz,www.api.andyotarola.xyz
+            - LETSENCRYPT_HOST=andyotarola.xyz,www.andyotarola.xyz,api.andyotarola.xyz,www.api.andyotarola.xyz
             - LETSENCRYPT_EMAIL=contacto@andyotarola.xyz
-
     server: 
         build: server
         restart: always
-        environment: 
-            - VIRTUAL_HOST=api.andyotarola.xyz,www.api.andyotarola.xyz
-            - LETSENCRYPT_HOST=api.andyotarola.xyz,www.api.andyotarola.xyz
+        # environment: 
+        #     - VIRTUAL_HOST=api.andyotarola.xyz,www.api.andyotarola.xyz
+        #     - LETSENCRYPT_HOST=api.andyotarola.xyz,www.api.andyotarola.xyz
         
     nginx-proxy:
         image: jwilder/nginx-proxy
